@@ -3,3 +3,6 @@ venv*/
 *.pyc
 /.idea
 __pycache__/
+
+# Jupyter
+.ipynb_checkpoints/

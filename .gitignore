@@ -1,5 +1,5 @@
 venv*/
-*code-workspase
+
 *.pyc
 /.idea
 __pycache__/

@@ -93,6 +93,7 @@ def create_file(filename: str, content: Union[str, bytes]) -> dict:
 
     Raises:
         ValueError: if filename is invalid.
+        RuntimeError: if file already exists
     """
 
     if not pathname_is_valid(filename):
@@ -113,7 +114,7 @@ def delete_file(filename: str) -> None:
         filename (str): filename
 
     Raises:
-        RuntimeError: if file does not exist.
+        RuntimeError: if file does not exist or given path isn't a file.
         ValueError: if filename is invalid.
     """
 

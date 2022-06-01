@@ -103,7 +103,7 @@ def create_file(filename: str, content: Union[str, bytes]) -> dict:
     content = content if isinstance(content, bytes) else str.encode(content)
     with open(filename, 'wb') as f:
         f.write(content)
-    file_metadata = get_file_data(filename,verbose=True)
+    file_metadata = get_file_data(filename, verbose=True)
     del file_metadata['edit_date']
     return file_metadata
 

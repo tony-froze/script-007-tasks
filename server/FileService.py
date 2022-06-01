@@ -100,8 +100,9 @@ def create_file(filename: str, content: Union[str, bytes]) -> dict:
         raise ValueError(f'Invalid file name: {filename}!')
     if os.path.exists(filename):
         raise RuntimeError(f'File {filename} already exists!')
+    content = content if isinstance(content, bytes) else str.encode(content)
     with open(filename, 'wb') as f:
-        f.write(str.encode(content))
+        f.write(content)
     file_metadata = get_file_data(filename,verbose=True)
     del file_metadata['edit_date']
     return file_metadata

@@ -67,7 +67,7 @@ def pathname_is_valid(pathname: str) -> bool:
                     return False
     # If a "TypeError" exception was raised, it almost certainly has the
     # error message "embedded NUL character" indicating an invalid pathname.
-    except TypeError as exc:
+    except TypeError:
         return False
     # If no exception was raised, all path components and hence this
     # pathname itself are valid. (Praise be to the curmudgeonly python.)
@@ -76,11 +76,27 @@ def pathname_is_valid(pathname: str) -> bool:
 
 
 def get_file_content(filename):
-    with open(filename) as f:
-        return f.readlines()
+    """Get file content.
+
+    Args:
+        filename (str): Filename.
+
+    Returns:
+        file content (bytes): Content of file in binary.
+    """
+    with open(filename, 'rb') as f:
+        return f.read()
 
 
 def get_file_creation_time(path):
+    """Get creation time(or last modification time if it is only option).
+
+    Args:
+        path (str): path to file.
+
+    Returns:
+        creation time (datetime): file creation time.
+    """
     if sys.platform == 'win32':
         return os.path.getctime(path)
     else:
@@ -91,7 +107,3 @@ def get_file_creation_time(path):
             # We're probably on Linux. No easy way to get creation dates here,
             # so we'll settle for when its content was last modified.
             return stat.st_mtime
-
-
-if __name__ == '__main__':
-    print(pathname_is_valid(r'\log:tess.log'))

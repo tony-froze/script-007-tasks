@@ -152,9 +152,3 @@ def delete_file(filename: str) -> None:
         msg = f'The given path "{filename}" is not a file!'
         logging.error(msg)
         raise RuntimeError(msg)
-
-
-if __name__ == '__main__':
-    print(os.getcwd())
-    change_dir('tmpdir', True)
-    print(os.getcwd())

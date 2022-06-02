@@ -1,6 +1,10 @@
 import logging
+import sys
 
-logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
+params = {'level': logging.DEBUG}
+if sys.version_info[0] > 3 or sys.version_info[0] == 3 and sys.version_info[1] > 8:
+    params['encoding'] = 'utf-8'
+logging.basicConfig(**params)
 logger = logging.getLogger('myprogram')
 
 logging.debug('my debug 🙄 message')

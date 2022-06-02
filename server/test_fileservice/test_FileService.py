@@ -110,4 +110,6 @@ class TestCreateFile:
 
 
 class TestDeleteFile:
-    pass
+    def test_delete_file(self, test_file):
+        delete_file(test_file[0])
+        assert not os.path.exists(test_file[0])

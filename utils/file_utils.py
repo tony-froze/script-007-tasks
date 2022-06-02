@@ -37,7 +37,7 @@ def pathname_is_valid(pathname: str) -> bool:
         # Test whether each path component split from this pathname is valid or
         # not, ignoring non-existent and non-readable path components.
         for pathname_part in pathname.split(os.path.sep):
-            if any(symbol in pathname_part for symbol in deprecated_symbols.get(platform, [])):
+            if any(symbol in pathname_part for symbol in deprecated_symbols.get(platform, ['/'])):
                 return False
             try:
                 os.lstat(root_dirname + pathname_part)

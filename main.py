@@ -10,6 +10,7 @@ from utils.log_utils import create_logs
 
 def main(args: DotMap):
     logging.debug('Start working...')
+    logging.debug(f'Ready to listen to port {config.port}.')
     fs.change_dir(args.directory)
     fs.create_file('test.txt', '123')
     content = str(fs.get_files()[0].get('content', 'sample data'))

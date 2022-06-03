@@ -9,7 +9,7 @@ import yaml
 
 def parse_cli_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--directory", type=str, required=True, help="Working directory")
+    parser.add_argument("-d", "--directory", type=str, help="Working directory")
     parser.add_argument('-l', '--loglevel',  type=str, default='INFO',
                         choices=logging._nameToLevel.keys(), help="Logging level")
     parser.add_argument('-f', '--logfile',  type=str, help="Logging file")
@@ -26,7 +26,7 @@ def parse_yaml_config():
             conf = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             conf = {}
-            print(exc)
+            logging.info(str(exc))
     return conf
 
 
@@ -36,4 +36,3 @@ config.update(parse_environ_args(config.get('app_prefix', 'FPS')))
 config.update(parse_cli_args())
 
 config = DotMap(config)
-print(config)

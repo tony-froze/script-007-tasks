@@ -7,6 +7,7 @@ import yaml  # pip install PyYAML
 with open('config.yaml', 'r') as stream:
     try:
         config = yaml.safe_load(stream)
+        print(type(config))
     except yaml.YAMLError as exc:
         print(exc)
 

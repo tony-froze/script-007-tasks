@@ -1,1 +1,5 @@
-pytest
+colorama==0.4.4
+dotmap==1.3.30
+pytest==7.1.2
+PyYAML==6.0
+

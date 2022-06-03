@@ -1,0 +1,5 @@
+directory: script-007-tasks/new_dir
+loglevel: INFO
+logfile: server.log
+port: 8080
+app_prefix: FS

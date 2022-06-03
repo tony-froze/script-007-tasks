@@ -1,5 +1,6 @@
 import os
 import datetime
+import logging
 from typing import Union
 
 from utils.file_utils import get_file_content, get_file_creation_time, pathname_is_valid
@@ -17,15 +18,22 @@ def change_dir(path: str, autocreate: bool = True) -> None:
         ValueError: if path is invalid.
     """
     if not pathname_is_valid(path):
-        raise ValueError(f'Invalid directory name: {path}!')
+        msg = f'Invalid directory name: {path}!'
+        logging.error(msg)
+        raise ValueError(msg)
     try:
         os.chdir(path)
+        logging.debug(f'Changing dir to {path}.')
     except FileNotFoundError:
         if autocreate:
+            logging.debug(f'Creating dir: {path}.')
             os.makedirs(path, exist_ok=True)
+            logging.debug(f'Changing dir to {path}.')
             os.chdir(path)
         else:
-            raise RuntimeError(f'There is no such directory "{path}" and autocreate parameter is False.')
+            msg = f'There is no such directory "{path}" and autocreate parameter is False.'
+            logging.error(msg)
+            raise RuntimeError(msg)
 
 
 def get_files() -> list:
@@ -38,7 +46,7 @@ def get_files() -> list:
         - edit_date (datetime): date of last file modification.
         - size (int): size of file in bytes.
     """
-
+    logging.debug('Checking files in work directory')
     files = os.listdir()
     return [get_file_data(file) for file in files]
 
@@ -62,8 +70,11 @@ def get_file_data(filename: str, verbose: bool = False) -> dict:
         RuntimeError: if file does not exist.
         ValueError: if filename is invalid.
     """
+    logging.debug(f'Collecting info about file {filename}.')
     if not pathname_is_valid(filename):
-        raise ValueError(f'Invalid file name {filename}!')
+        msg = f'Invalid file name {filename}!'
+        logging.error(msg)
+        raise ValueError(msg)
     file_info = dict()
     try:
         file_info['name'] = os.path.basename(filename)
@@ -74,7 +85,9 @@ def get_file_data(filename: str, verbose: bool = False) -> dict:
             file_info['content'] = get_file_content(filename)
         return file_info
     except FileNotFoundError:
-        raise RuntimeError(f'There is no such file "{filename}"!')
+        msg = f'There is no such file "{filename}"!'
+        logging.error(msg)
+        raise RuntimeError(msg)
 
 
 def create_file(filename: str, content: Union[str, bytes]) -> dict:
@@ -95,14 +108,19 @@ def create_file(filename: str, content: Union[str, bytes]) -> dict:
         ValueError: if filename is invalid.
         RuntimeError: if file already exists
     """
-
+    logging.debug(f'Starting file creation {filename}')
     if not pathname_is_valid(filename):
-        raise ValueError(f'Invalid file name: {filename}!')
+        msg = f'Invalid file name {filename}!'
+        logging.error(msg)
+        raise ValueError(msg)
     if os.path.exists(filename):
-        raise RuntimeError(f'File {filename} already exists!')
+        msg = f'File {filename} already exists!'
+        logging.error(msg)
+        raise RuntimeError(msg)
     content = content if isinstance(content, bytes) else str.encode(content)
     with open(filename, 'wb') as f:
         f.write(content)
+    logging.info(f'File {filename} was created.')
     file_metadata = get_file_data(filename, verbose=True)
     del file_metadata['edit_date']
     return file_metadata
@@ -120,10 +138,17 @@ def delete_file(filename: str) -> None:
     """
 
     if not pathname_is_valid(filename):
-        raise ValueError(f'Invalid file name: {filename}!')
+        msg = f'Invalid file name {filename}!'
+        logging.error(msg)
+        raise ValueError(msg)
     if not os.path.exists(filename):
-        raise RuntimeError(f'There is no such file "{filename}"!')
+        msg = f'There is no such file "{filename}"!'
+        logging.error(msg)
+        raise RuntimeError(msg)
     if os.path.isfile(filename):
         os.remove(filename)
+        logging.info(f'File "{filename}" was removed.')
     else:
-        raise RuntimeError(f'The given path "{filename}" is not a file!')
+        msg = f'The given path "{filename}" is not a file!'
+        logging.error(msg)
+        raise RuntimeError(msg)

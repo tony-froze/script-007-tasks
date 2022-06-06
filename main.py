@@ -4,7 +4,7 @@ import logging
 from dotmap import DotMap
 from aiohttp import web
 
-from server.WebHandler import WebHandler as wh
+from server.WebHandler import WebHandler
 
 from config import config
 import server.FileService as fs

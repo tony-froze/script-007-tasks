@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-import argparse
-import os
 import logging
 
+from dotmap import DotMap
+
+from config import config
 import server.FileService as fs
 from utils.log_utils import create_logs
 
 
-def main(args: argparse.Namespace):
+def main(args: DotMap):
     logging.debug('Start working...')
+    logging.debug(f'Ready to listen to port {config.port}.')
     fs.change_dir(args.directory)
     fs.create_file('test.txt', '123')
     content = str(fs.get_files()[0].get('content', 'sample data'))
@@ -17,11 +19,8 @@ def main(args: argparse.Namespace):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--directory", type=str, required=True, help="Working directory")
-    parser.add_argument('-l', '--loglevel',  type=str, default='INFO',
-                        choices=logging._nameToLevel.keys(), help="Logging level")
-    parser.add_argument('-f', '--logfile',  type=str, default='server.log',  help="Logging file")
-    arguments = parser.parse_args()
-    create_logs(arguments.logfile, arguments.loglevel)
-    main(arguments)
+    create_logs(config.logfile, config.loglevel)
+    try:
+        main(config)
+    except Exception as ex:
+        logging.error(f'Unexpected exception occurred: {ex}')

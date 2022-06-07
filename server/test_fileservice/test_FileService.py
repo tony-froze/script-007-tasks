@@ -50,7 +50,7 @@ class TestGetFileData:
 
     def test_get_file_data_return_content(self, test_file):
         file_data = get_file_data(test_file[0], verbose=True)
-        assert file_data['content'] == test_file[1]
+        assert file_data['content'] == test_file[1].decode()
 
     def test_get_file_data_return_keys(self, test_file):
         file_data = get_file_data(test_file[0], verbose=False)
@@ -99,7 +99,7 @@ class TestCreateFile:
         file = tmpdir.join('test_file.txt')
         content = b'12345'
         new_file_data = create_file(str(file), content)
-        assert new_file_data['content'] == content
+        assert new_file_data['content'] == content.decode()
 
     def test_create_file_return_keys(self, tmpdir):
         file = tmpdir.join('test_file.txt')

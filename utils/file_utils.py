@@ -1,6 +1,7 @@
-import os
-import sys
 import errno
+import os
+import re
+import sys
 
 
 def pathname_is_valid(pathname: str) -> bool:
@@ -17,7 +18,7 @@ def pathname_is_valid(pathname: str) -> bool:
     # If this pathname is either not a string or is but is empty, this pathname
     # is invalid.
     try:
-        if not isinstance(pathname, str) or '..' in pathname or not pathname.strip():
+        if not isinstance(pathname, str) or re.search(r'\.\.[\\/]', pathname) or not pathname.strip():
             return False
 
         # Strip this pathname's Windows-specific drive specifier (e.g., `C:\`)
@@ -82,10 +83,15 @@ def get_file_content(filename):
         filename (str): Filename.
 
     Returns:
-        file content (bytes): Content of file in binary.
+        file content (str): string representation of file content .
     """
     with open(filename, 'rb') as f:
-        return f.read()
+        data = f.read()
+    try:
+        data = data.decode()
+    except Exception:
+        data = data.decode('ANSI')
+    return data
 
 
 def get_file_creation_time(path):

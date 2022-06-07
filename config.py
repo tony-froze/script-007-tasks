@@ -35,7 +35,8 @@ def parse_yaml_config():
 
     Returns: a dictionary with all variables from config file.
     """
-    with open('config.yaml', 'r') as stream:
+    path = os.path.join(os.path.dirname(__file__), 'config.yaml')
+    with open(path, 'r') as stream:
         try:
             conf = yaml.safe_load(stream)
         except yaml.YAMLError as exc:

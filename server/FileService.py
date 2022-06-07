@@ -1,5 +1,5 @@
 import os
-import datetime
+import time
 import logging
 from typing import Union
 
@@ -78,8 +78,8 @@ def get_file_data(filename: str, verbose: bool = False) -> dict:
     file_info = dict()
     try:
         file_info['name'] = os.path.basename(filename)
-        file_info['create_date'] = datetime.datetime.fromtimestamp(get_file_creation_time(filename))
-        file_info['edit_date'] = datetime.datetime.fromtimestamp(os.path.getmtime(filename))
+        file_info['create_date'] = time.ctime(get_file_creation_time(filename))
+        file_info['edit_date'] = time.ctime(os.path.getmtime(filename))
         file_info['size'] = os.path.getsize(filename)
         if verbose:
             file_info['content'] = get_file_content(filename)
